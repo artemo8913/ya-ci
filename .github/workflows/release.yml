@@ -8,7 +8,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
-  
+
 jobs:
   release:
     name: Create Release
@@ -24,7 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         uses: mikepenz/release-changelog-builder-action@v4.0.0-rc03
         with:
-          configurationJson: "configuration.json"
+          configurationJson: ./.github/workflows/configuration.json
           onwer: "Spiryaev"
       - name: Create Release
         id: create_release
