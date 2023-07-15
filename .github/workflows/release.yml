@@ -35,7 +35,6 @@ jobs:
           draft: false
           prerelease: true
 
-  
   # Deployment job
   deploy:
     name: Deploy
