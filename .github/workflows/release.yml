@@ -2,7 +2,7 @@ name: Create Release and deploy
 on:
   push:
     tags:
-      - "v[0-9]+"
+      - v[0-9]+
   workflow_dispatch:
 
 
@@ -17,30 +17,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: [18.x]
-
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Staring Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - name: install modules
-  #       run: npm ci
-  #     - name: build production project
-  #       run: npm run build
-  #       if: always()
-  #     - name: unit testing
-  #       run: npm run test-ci
-  #     - name: install chromium for e2e
-  #       run: npx playwright install --with-deps chromium
-  #     - name: e2e testing
-  #       run: npm run e2e-ci
-
   release:
     name: Create Release
     runs-on: ubuntu-latest
