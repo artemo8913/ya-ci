@@ -4,35 +4,70 @@ on:
     tags:
       - v*.*.*
   workflow_dispatch:
+
+#Разрешения
 permissions:
   contents: write
   pages: write
   id-token: write
+
+# Комплекс операций
 jobs:
   release:
-    name: Create Release
+    name: Create release
     runs-on: ubuntu-latest
     steps:
+      ######################
       - name: Checkout code
         uses: actions/checkout@v2
+
+      ######################
       - name: Echo tag
         run: echo ${{ github.ref }}
-      - name: Conventional Changelog Action
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@v3
-        with:
-          github-token: ${{ secrets.github_token }}
-          output-file: "false"
+
+      ######################
+      - name: Create information for changelog
+        id: build_changelog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: mikepenz/release-changelog-builder-action@v4.0.0-rc03
+      
+        ######################
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: ${{ steps.changelog.outputs.clean_changelog }}
+          body: |
+            Changes in this Release
+            ${{'echo git log $(git describe --tags --abbrev=0)..HEAD --oneline'}}
           draft: false
-          prerelease: true
+          prerelease: false
+        ######################
+      - name: Test
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Create Release Issue
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueTitle = `Release ${process.env.GITHUB_REF_NAME}`;
+            const issueBody = `
+              **Author**: ${process.env.GITHUB_ACTOR}
+              **Date**: ${new Date().toISOString()}
+              **Version**: ${process.env.RELEASE_VERSION}
+              
+              Changelog:
+            `;
+            const { data: newIssue } = await github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody
+            });
 
   # Deployment job
   deploy:
