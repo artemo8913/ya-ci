@@ -5,15 +5,9 @@ on:
       - v[0-9]+
   workflow_dispatch:
 
-
 permissions:
   contents: write
-  pages: write
   id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   release:
