@@ -35,7 +35,7 @@ jobs:
 
   # Deployment job
   deploy:
-    name: Create release info
+    name: Deploy
     needs: release
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
