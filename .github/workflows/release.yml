@@ -53,11 +53,11 @@ jobs:
 
         ######################
       - name: GetDate
-        run: DATE=`date`
+        run: export DATE=`date`
       - name: Create Release Issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh issue create --title "RELEASE ${{ steps.build_changelog.outputs.toTag }}" --body "Автор - ${{steps.build_changelog.outputs.owner}}\nДата - $DATE"
+        run: gh issue create --title "RELEASE ${{ steps.build_changelog.outputs.toTag }}" --body "Автор - ${{steps.build_changelog.outputs.owner}} Дата $DATE"
 
   # Deployment job
   deploy:
