@@ -52,10 +52,12 @@ jobs:
           prerelease: false
 
         ######################
+      - name: GetDate
+        run: DATE=`date`>
       - name: Create Release Issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh issue create --title "New release ${{ github.ref }}" --body "Here are more details."
+        run: gh issue create --title "RELEASE ${{ steps.build_changelog.outputs.toTag }}" --body "Автор - ${{steps.build_changelog.outputs.owner}}\nДата - $DATE"
 
   # Deployment job
   deploy:
