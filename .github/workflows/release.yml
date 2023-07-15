@@ -67,6 +67,15 @@ jobs:
           draft: false
           prerelease: false
 
+  changelog:
+    name: Create release info
+    needs: release
+    uses: ./.github/workflows/changelog.yml
+    secrets: inherit
+    permissions:
+      id-token: write
+      issues: write
+  
   # Deployment job
   deploy:
     name: Deploy
