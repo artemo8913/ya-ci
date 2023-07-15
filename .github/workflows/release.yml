@@ -53,7 +53,7 @@ jobs:
 
         ######################
       - name: GetDate
-        run: DATE=`date`>
+        run: DATE=`date`
       - name: Create Release Issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
