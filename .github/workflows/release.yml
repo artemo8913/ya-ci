@@ -20,7 +20,12 @@ jobs:
         run: echo ${{ github.ref }}
       - name: Release Changelog Builde
         id: build_changelog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         uses: mikepenz/release-changelog-builder-action@v4.0.0-rc03
+        with:
+          configurationJson: "configuration.json"
+          onwer: "Spiryaev"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
