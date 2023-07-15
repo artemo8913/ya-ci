@@ -38,10 +38,11 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: e2e testing
         run: npm run e2e-ci
-        
+
   ######################      
   release:
     name: Create release
+    needs: test
     runs-on: ubuntu-latest
     steps:
       ######################
