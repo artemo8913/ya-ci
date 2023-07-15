@@ -18,6 +18,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Echo tag
         run: echo ${{ github.ref }}
+      - name: Release Changelog Builde
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v4.0.0-rc03
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -28,8 +31,23 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             Changes in this Release
-            - First Change
-            - Second Change
+            changelog: ${{steps.build_changelog.outputs.changelog}}
+            owner: ${{steps.build_changelog.outputs.owner}}
+            repo: ${{steps.build_changelog.outputs.repo}}
+            fromTag: ${{steps.build_changelog.outputs.fromTag}}
+            toTag: ${{steps.build_changelog.outputs.toTag}}
+            failed: ${{steps.build_changelog.outputs.failed}}
+            pull_requests: ${{steps.build_changelog.outputs.pull_requests}}
+            categorized_prs: ${{steps.build_changelog.outputs.categorized_prs}}
+            open_prs: ${{steps.build_changelog.outputs.open_prs}}
+            uncategorized_prs: ${{steps.build_changelog.outputs.uncategorized_prs}}
+            changed_files: ${{steps.build_changelog.outputs.changed_files}}
+            additions: ${{steps.build_changelog.outputs.additions}}
+            deletions: ${{steps.build_changelog.outputs.deletions}}
+            changes: ${{steps.build_changelog.outputs.changes}}
+            commits: ${{steps.build_changelog.outputs.commits}}
+            categorized: ${{steps.build_changelog.outputs.categorized}}
+            cache: ${{steps.build_changelog.outputs.cache}}
           draft: false
           prerelease: false
 
