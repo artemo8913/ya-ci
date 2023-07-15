@@ -2,7 +2,8 @@ name: Create Release and deploy
 on:
   push:
     tags:
-      - 'v[0-9]+'
+      - 'v*.*.*'
+  workflow_dispatch:
 
 permissions:
   contents: write
